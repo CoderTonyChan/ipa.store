@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Puffies 1.21 iOS 内测安装</title>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui, -apple-system, sans-serif}
+    body{background:#f5f7fa;padding:30px 20px;text-align:center}
+    .card{max-width:400px;margin:0 auto;background:#fff;border-radius:18px;padding:30px;box-shadow:0 4px 20px #00000015}
+    h1{font-size:24px;color:#222;margin-bottom:10px}
+    .version{color:#666;margin-bottom:24px}
+    #qrcode{margin:20px auto;width:220px;height:220px}
+    .install-btn{display:block;text-decoration:none;background:#007aff;color:#fff;font-size:18px;padding:14px;border-radius:12px;margin:16px 0;font-weight:bold}
+    .direct-download{display:block;text-decoration:none;color:#007aff;margin-top:12px}
+    .tip{margin-top:20px;color:#777;font-size:14px;line-height:1.6}
+    .warn{color:#ff3b30}
+  </style>
+</head>
+<body>
+<div class="card">
+  <h1>Puffies</h1>
+  <div class="version">Version 1.21 (Signed IPA)</div>
+  <div id="qrcode"></div>
+  <a id="otaLink" class="install-btn">📱 Safari 安装App</a>
+  <a class="direct-download" href="https://github.com/CoderTonyChan/games-state/releases/download/1/puffies._1.21_com.lykkestudios.puffies_signed.ipa">💻 电脑直接下载IPA包</a>
+  <div class="tip">
+    <p class="warn">⚠️ 必须使用 iPhone Safari 打开！微信/QQ内置浏览器无法安装</p>
+    <p>安装后：设置 → 通用 → VPN与设备管理，信任开发者证书</p>
+    <p>IPA已签名，如证书吊销则无法安装</p>
+  </div>
+</div>
+
+<script>
+  // 你的 GitHub Pages plist 地址
+  const plistUrl = "https://codertonychan.github.io/games-state/manifest.plist";
+  const otaUrl = `itms-services://?action=download-manifest&url=${plistUrl}`;
+  document.getElementById("otaLink").href = otaUrl;
+  QRCode.toCanvas(document.getElementById('qrcode'), otaUrl, {width:220}, function (error) {
+    if (error) console.error(error)
+  })
+</script>
+</body>
+</html>
