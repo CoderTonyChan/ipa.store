@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Puffies 1.21 iOS 内测安装</title>
-  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
   <style>
     *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui, -apple-system, sans-serif}
     body{background:#f5f7fa;padding:30px 20px;text-align:center}
@@ -12,6 +11,7 @@
     h1{font-size:24px;color:#222;margin-bottom:10px}
     .version{color:#666;margin-bottom:24px}
     #qrcode{margin:20px auto;width:220px;height:220px}
+    #qrcode img{width:220px;height:220px;object-fit:contain;}
     .install-btn{display:block;text-decoration:none;background:#007aff;color:#fff;font-size:18px;padding:14px;border-radius:12px;margin:16px 0;font-weight:bold}
     .direct-download{display:block;text-decoration:none;color:#007aff;margin-top:12px}
     .tip{margin-top:20px;color:#777;font-size:14px;line-height:1.6}
@@ -22,7 +22,10 @@
 <div class="card">
   <h1>Puffies</h1>
   <div class="version">Version 1.21 (Signed IPA)</div>
-  <div id="qrcode"></div>
+  <div id="qrcode">
+    <!-- 静态二维码，数据是完整编码后的itms链接 -->
+    <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=itms-services%3A%2F%2F%3Faction%3Ddownload-manifest%26url%3Dhttps%253A%252F%252Fipa-store.pages.dev%252Fmanifest.plist" alt="OTA二维码">
+  </div>
   <a id="otaLink" class="install-btn">📱 Safari 安装App</a>
   <a class="direct-download" href="https://github.com/CoderTonyChan/games-state/releases/download/1/puffies._1.21_com.lykkestudios.puffies_signed.ipa">💻 电脑直接下载IPA包</a>
   <div class="tip">
@@ -32,16 +35,10 @@
   </div>
 </div>
 
-
-
 <script>
-  // 你的 GitHub Pages plist 地址
-  const plistUrl = "https://codertonychan.github.io/games-state/manifest.plist";
-  const otaUrl = `itms-services://?action=download-manifest&url=${plistUrl}`;
+  const plistRawUrl = "https://ipa-store.pages.dev/manifest.plist";
+  const otaUrl = `itms-services://?action=download-manifest&url=${encodeURIComponent(plistRawUrl)}`;
   document.getElementById("otaLink").href = otaUrl;
-  QRCode.toCanvas(document.getElementById('qrcode'), otaUrl, {width:220}, function (error) {
-    if (error) console.error(error)
-  })
 </script>
 </body>
 </html>
