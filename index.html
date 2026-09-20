@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Puffies 1.21 iOS 内测安装</title>
+  <title>iOS OTA安装中心</title>
   <style>
     *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui, -apple-system, sans-serif}
     body{background:#f5f7fa;padding:30px 20px;text-align:center}
-    .card{max-width:400px;margin:0 auto;background:#fff;border-radius:18px;padding:30px;box-shadow:0 4px 20px #00000015}
+    .card{max-width:400px;margin:0 auto 30px auto;background:#fff;border-radius:18px;padding:30px;box-shadow:0 4px 20px #00000015}
     h1{font-size:24px;color:#222;margin-bottom:10px}
     .version{color:#666;margin-bottom:24px}
-    #qrcode{margin:20px auto;width:220px;height:220px}
-    #qrcode img{width:220px;height:220px;object-fit:contain;}
+    .qrcode{margin:20px auto;width:220px;height:220px}
+    .qrcode img{width:220px;height:220px;object-fit:contain;}
     .install-btn{display:block;text-decoration:none;background:#007aff;color:#fff;font-size:18px;padding:14px;border-radius:12px;margin:16px 0;font-weight:bold}
     .direct-download{display:block;text-decoration:none;color:#007aff;margin-top:12px}
     .tip{margin-top:20px;color:#777;font-size:14px;line-height:1.6}
@@ -19,26 +19,51 @@
   </style>
 </head>
 <body>
-<div class="card">
-  <h1>Puffies</h1>
-  <div class="version">Version 1.21 (Signed IPA)</div>
-  <div id="qrcode">
-    <!-- 静态二维码，数据是完整编码后的itms链接 -->
-    <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=itms-services%3A%2F%2F%3Faction%3Ddownload-manifest%26url%3Dhttps%253A%252F%252Fipa-store.pages.dev%252Fmanifest.plist" alt="OTA二维码">
-  </div>
-  <a id="otaLink" class="install-btn">📱 Safari 安装App</a>
-  <a class="direct-download" href="https://github.com/CoderTonyChan/games-state/releases/download/1/puffies._1.21_com.lykkestudios.puffies_signed.ipa">💻 电脑直接下载IPA包</a>
-  <div class="tip">
-    <p class="warn">⚠️ 必须使用 iPhone Safari 打开！微信/QQ内置浏览器无法安装</p>
-    <p>安装后：设置 → 通用 → VPN与设备管理，信任开发者证书</p>
-    <p>IPA已签名，如证书吊销则无法安装</p>
-  </div>
-</div>
+<div id="container"></div>
 
 <script>
-  const plistRawUrl = "https://ipa-store.pages.dev/manifest.plist";
-  const otaUrl = `itms-services://?action=download-manifest&url=${encodeURIComponent(plistRawUrl)}`;
-  document.getElementById("otaLink").href = otaUrl;
+  // ========== IPA配置数组 ==========
+  const appList = [
+    {
+      title: "电子签App",
+      version: "5.0.2",
+      bundleId: "xyz.yyyue.esign.net",
+      plistUrl: "https://ipa-store.pages.dev/xyz.yyyue.esign.net-5.0.2.plist",
+      ipaDownloadUrl: "https://github.com/CoderTonyChan/ipa.store/releases/download/ipa.store/2609_5.0.2_xyz.yyyue.esign.net_signed.ipa"
+    },
+    {
+      title: "Puffies",
+      version: "1.21",
+      bundleId: "com.lykkestudios.puffies",
+      plistUrl: "https://ipa-store.pages.dev/com.lykkestudios.puffies-1.21.plist",
+      ipaDownloadUrl: "https://github.com/CoderTonyChan/games-state/releases/download/1/puffies._1.21_com.lykkestudios.puffies_signed.ipa"
+    }
+  ];
+
+  const container = document.getElementById("container");
+
+  appList.forEach(app => {
+    const otaRaw = `itms-services://?action=download-manifest&url=${encodeURIComponent(app.plistUrl)}`;
+    const qrData = encodeURIComponent(otaRaw);
+    const qrImgSrc = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${qrData}`;
+
+    const cardHtml = `
+    <div class="card">
+        <h1>${app.title}</h1>
+        <div class="version">v${app.version}</div>
+        <div class="qrcode">
+            <img src="${qrImgSrc}" alt="OTA二维码">
+        </div>
+        <a class="install-btn" href="${otaRaw}">📱 Safari 安装 v${app.version}</a>
+        <a class="direct-download" href="${app.ipaDownloadUrl}">💻 电脑直接下载IPA包</a>
+        <div class="tip">
+            <p class="warn">⚠️ iPhone必须使用Safari打开；微信/QQ内置浏览器无效</p>
+            <p>BundleID：${app.bundleId}</p>
+        </div>
+    </div>
+    `;
+    container.innerHTML += cardHtml;
+  })
 </script>
 </body>
 </html>
