@@ -18,6 +18,12 @@ const appList = [
         version: "1.32.0",
         bundleId: "jp.co.bandainamcoent.BNEI0361",
         ipaDownloadUrl: "https://github.com/CoderTonyChan/ipa.store/releases/download/ipa.store/taigu_1.32.0_jp.co.bandainamcoent.BNEI0361_rm.iPASTORE._signed.ipa"
+    },
+    {
+        title: "洛克人X",
+        version: "1.06.00",
+        bundleId: "jp.co.cpcom.rockmanxcn",
+        ipaDownloadUrl: "https://github.com/CoderTonyChan/ipa.store/releases/download/ipa.store/luokerenX_1.06.00_jp.co.cpcom.rockmanxcn_rm.libLoohaInjectionDylib._signed.ipa"
     }
 ];
 
