@@ -1,69 +1,152 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>iOS OTA安装中心</title>
+  <title>IPA OTA安装中心</title>
   <style>
-    *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui, -apple-system, sans-serif}
-    body{background:#f5f7fa;padding:30px 20px;text-align:center}
-    .card{max-width:400px;margin:0 auto 30px auto;background:#fff;border-radius:18px;padding:30px;box-shadow:0 4px 20px #00000015}
-    h1{font-size:24px;color:#222;margin-bottom:10px}
-    .version{color:#666;margin-bottom:24px}
-    .qrcode{margin:20px auto;width:220px;height:220px}
-    .qrcode img{width:220px;height:220px;object-fit:contain;}
-    .install-btn{display:block;text-decoration:none;background:#007aff;color:#fff;font-size:18px;padding:14px;border-radius:12px;margin:16px 0;font-weight:bold}
-    .direct-download{display:block;text-decoration:none;color:#007aff;margin-top:12px}
-    .tip{margin-top:20px;color:#777;font-size:14px;line-height:1.6}
-    .warn{color:#ff3b30}
+    *{box-sizing:border-box;font-family:system-ui,-apple-system}
+    body{max-width:620px;margin:24px auto;padding:0 16px;background:#f8f9fa}
+    h2{text-align:center;color:#222}
+    .node-select-wrap{background:#fff;padding:14px;border-radius:10px;margin-bottom:16px}
+    label{font-weight:500}
+    #nodeSelect{padding:6px 8px;font-size:16px;margin-left:8px;width:100%;margin-top:8px}
+    .card{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:16px;margin:12px 0}
+    .card h3{margin:0 0 6px 0;color:#111}
+    .card p{color:#555;margin:4px 0 12px 0;font-size:14px}
+    button{padding:9px 14px;margin:4px;border:none;border-radius:6px;cursor:pointer;font-size:15px}
+    .btn-ota{background:#2563eb;color:#fff}
+    .btn-download{background:#10b981;color:#fff}
   </style>
 </head>
 <body>
-<div id="container"></div>
+<h2>iOS IPA OTA 安装中心</h2>
+<div class="node-select-wrap">
+  <label>选择下载网点：</label>
+  <select id="nodeSelect">
+    <option value="">原版GitHub（国外直连，国内较慢）</option>
+    <option value="https://ghproxy.net/">GHProxy.net 加速节点</option>
+    <option value="https://ghproxy.com/">GHProxy.com 备用节点</option>
+  </select>
+</div>
+
+<div id="appContainer"></div>
 
 <script>
-  // ========== IPA配置数组 ==========
+  // 应用列表数组，新增APP直接在这里追加
   const appList = [
     {
       title: "轻松签",
       version: "5.0.2",
       bundleId: "xyz.yyyue.esign.net",
-      plistUrl: "https://ipa-store.pages.dev/xyz.yyyue.esign.net-5.0.2.plist",
       ipaDownloadUrl: "https://github.com/CoderTonyChan/ipa.store/releases/download/ipa.store/2609_5.0.2_xyz.yyyue.esign.net_signed.ipa"
     },
     {
       title: "Puffies",
       version: "1.21",
       bundleId: "com.lykkestudios.puffies",
-      plistUrl: "https://ipa-store.pages.dev/com.lykkestudios.puffies-1.21.plist",
-      ipaDownloadUrl: "https://github.com/CoderTonyChan/games-state/releases/download/1/puffies._1.21_com.lykkestudios.puffies_signed.ipa"
+      ipaDownloadUrl: "https://github.com/CoderTonyChan/ipa.store/releases/download/ipa.store/puffies._1.21_com.lykkestudios.puffies_signed.ipa"
     }
   ];
 
-  const container = document.getElementById("container");
+  const container = document.getElementById('appContainer');
+  const nodeSelect = document.getElementById('nodeSelect');
 
-  appList.forEach(app => {
-    const otaRaw = `itms-services://?action=download-manifest&url=${encodeURIComponent(app.plistUrl)}`;
-    const qrData = encodeURIComponent(otaRaw);
-    const qrImgSrc = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${qrData}`;
+  // 构建plist xml文本
+  function buildPlistXml(ipaUrl, bundleId, appTitle, version) {
+    return `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>items</key>
+    <array>
+        <dict>
+            <key>assets</key>
+            <array>
+                <dict>
+                    <key>kind</key>
+                    <string>software-package</string>
+                    <key>url</key>
+                    <string>${ipaUrl}</string>
+                </dict>
+            </array>
+            <key>metadata</key>
+            <dict>
+                <key>bundle-identifier</key>
+                <string>${bundleId}</string>
+                <key>bundle-version</key>
+                <string>${version}</string>
+                <key>kind</key>
+                <string>software</string>
+                <key>title</key>
+                <string>${appTitle}</string>
+            </dict>
+        </dict>
+    </array>
+</dict>
+</plist>`;
+  }
 
-    const cardHtml = `
-    <div class="card">
-        <h1>${app.title}</h1>
-        <div class="version">v${app.version}</div>
-        <div class="qrcode">
-            <img src="${qrImgSrc}" alt="OTA二维码">
-        </div>
-        <a class="install-btn" href="${otaRaw}">📱 Safari 安装 v${app.version}</a>
-        <a class="direct-download" href="${app.ipaDownloadUrl}">💻 电脑直接下载IPA包</a>
-        <div class="tip">
-            <p class="warn">⚠️ iPhone必须使用Safari打开；微信/QQ内置浏览器无效</p>
-            <p>BundleID：${app.bundleId}</p>
-        </div>
-    </div>
+  // 渲染APP卡片
+  function renderApps() {
+    container.innerHTML = '';
+    const prefix = nodeSelect.value;
+    appList.forEach(app => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+      <h3>${app.title} v${app.version}</h3>
+      <p>BundleID：${app.bundleId}</p>
+      <button class="otaInstallBtn btn-ota"
+        data-title="${app.title}"
+        data-version="${app.version}"
+        data-bundleid="${app.bundleId}"
+        data-ipa="${app.ipaDownloadUrl}"
+      >iOS OTA安装</button>
+      <a target="_blank">
+        <button class="directDownloadBtn btn-download" data-ipa="${app.ipaDownloadUrl}">直接下载IPA</button>
+      </a>
     `;
-    container.innerHTML += cardHtml;
-  })
+      container.appendChild(card);
+    })
+    bindEvents();
+  }
+
+  // 绑定点击事件
+  function bindEvents() {
+    const prefix = nodeSelect.value;
+
+    // OTA安装按钮（DataURL base64）
+    document.querySelectorAll('.otaInstallBtn').forEach(btn => {
+      btn.onclick = function() {
+        const rawIpa = this.dataset.ipa;
+        const finalIpaUrl = prefix ? prefix + rawIpa : rawIpa;
+        const bundleId = this.dataset.bundleid;
+        const title = this.dataset.title;
+        const ver = this.dataset.version;
+
+        const plistText = buildPlistXml(finalIpaUrl, bundleId, title, ver);
+        // 编码为base64 data url
+        const encoded = encodeURIComponent(plistText);
+        const base64Str = btoa(unescape(encoded));
+        const plistDataUrl = `data:application/xml;base64,${base64Str}`;
+        // itms-services跳转
+        window.location.href = `itms-services://?action=download-manifest&url=${encodeURIComponent(plistDataUrl)}`;
+      }
+    })
+
+    // 直接下载IPA按钮
+    document.querySelectorAll('.directDownloadBtn').forEach(btn => {
+      const link = btn.parentElement;
+      const rawIpa = btn.dataset.ipa;
+      const finalIpaUrl = prefix ? prefix + rawIpa : rawIpa;
+      link.href = finalIpaUrl;
+    })
+  }
+
+  // 切换网点自动刷新页面
+  nodeSelect.onchange = renderApps;
+  renderApps();
 </script>
 </body>
 </html>
