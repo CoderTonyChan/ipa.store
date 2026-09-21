@@ -12,6 +12,12 @@ const appList = [
         version: "1.21",
         bundleId: "com.lykkestudios.puffies",
         ipaDownloadUrl: "https://github.com/CoderTonyChan/ipa.store/releases/download/ipa.store/puffies._1.21_com.lykkestudios.puffies_signed.ipa"
+    },
+    {
+        title: "太鼓达人",
+        version: "1.32.0",
+        bundleId: "jp.co.bandainamcoent.BNEI0361",
+        ipaDownloadUrl: "https://github.com/CoderTonyChan/ipa.store/releases/download/ipa.store/taigu_1.32.0_jp.co.bandainamcoent.BNEI0361_rm.iPASTORE._signed.ipa"
     }
 ];
 
