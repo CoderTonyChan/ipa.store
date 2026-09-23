@@ -4,7 +4,7 @@ const path = require('path');
 const { appList, nodeList } = require('./app.config');
 
 /**
- * XML转义，plist专用，处理 & < > " 四个特殊字符
+ * XML转义，用于标题、bundleId、版本号（这些字段不使用CDATA）
  * @param {string} str
  * @returns {string}
  */
@@ -17,12 +17,14 @@ function escapeXml(str) {
         .replace(/"/g, '&quot;');
 }
 
-// plist xml模板
+// plist xml模板，url字段使用CDATA包裹
 function buildPlistContent(ipaFullUrl, bundleId, title, version) {
     const urlEsc = escapeXml(ipaFullUrl);
     const bidEsc = escapeXml(bundleId);
     const titleEsc = escapeXml(title);
     const verEsc = escapeXml(version);
+    console.log(urlEsc)
+    console.log(ipaFullUrl)
 
     return `<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -37,7 +39,7 @@ function buildPlistContent(ipaFullUrl, bundleId, title, version) {
                     <key>kind</key>
                     <string>software-package</string>
                     <key>url</key>
-                    <string>${urlEsc}</string>
+                    <string><![CDATA[${ipaFullUrl}]]></string>
                 </dict>
             </array>
             <key>metadata</key>
