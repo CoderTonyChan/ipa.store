@@ -18,6 +18,8 @@ function escapeXml(str) {
 }
 
 // plist xml模板，url字段使用CDATA包裹
+// <string><![CDATA[${ipaFullUrl}]]></string>
+//  <string>${urlEsc}</string>
 function buildPlistContent(ipaFullUrl, bundleId, title, version) {
     const urlEsc = escapeXml(ipaFullUrl);
     const bidEsc = escapeXml(bundleId);
