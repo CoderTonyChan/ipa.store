@@ -34,8 +34,8 @@ const appList = [
     {
         title: "轻松签X",
         version: "5.0.2",
-        bundleId: "xyz.yyyue.esign.net",
-        ipaDownloadUrl: "https://dl-c-sz.pds.quark.cn/NTmQEdxW/8745112341/5d758c03a7484b8d8932e3c1cbbb8f026a8d5e26/6a8d5e26a5a9fe819df54dad82a53f22da40bbec?Expires=1790170404&OSSAccessKeyId=LTAI5tJJpWQEfrcKHnd1LqsZ&Signature=Z9TCJg1Z3cQp3r%2F0jj8OYgu%2Bwpo%3D&x-oss-traffic-limit=503316480&response-content-disposition=attachment%3B%20filename%3D%25E8%25BD%25BB%25E6%259D%25BE202509_5.0.2.ipa%3Bfilename%2A%3Dutf-8%27%27%25E8%25BD%25BB%25E6%259D%25BE202509_5.0.2.ipa&callback-var=eyJ4OmF1IjoiMTc5MDE3MDQwNC03OTExLTIxNjAwLTI2MDgiLCJ4Om9yayI6IlozMjlsbHB0ZDk0MWl1YTY3NDFUM29lMTlHUjFLckYwa2I4ZUxGN2FPIiwieDp1ZCI6IjEyLTQtNi0wLTYtTi00LU4tMS0yNC0yLU4tTi1OLU4iLCJ4OnNwIjoiMTAwIiwieDp0b2tlbiI6IjQtYWYyODMxMDVhYWNiODc2Y2RlN2NmYjAwYjI2MmE2MmItNC0xLTEwMjQwLTM5MzBmMGE0MmYxYTRhZDZhOGYyZGE2YmRjYTQ3ODBlLTAtNTEyMC0wLTAtNGM5ODFjODQ0NDcxNmQxZmVhNjY3MGVhNTZlMWQzZDEiLCJ4OnR0bCI6IjIxNjAwIn0%3D&abt=4_0_&dfi=161&callback=eyJjYWxsYmFja0JvZHlUeXBlIjoiYXBwbGljYXRpb24vanNvbiIsImNhbGxiYWNrU3RhZ2UiOiJiZWZvcmUtZXhlY3V0ZSIsImNhbGxiYWNrRmFpbHVyZUFjdGlvbiI6Imlnbm9yZSIsImNhbGxiYWNrVXJsIjoiaHR0cHM6Ly9jbG91ZC1hdXRoLmRyaXZlLnF1YXJrLmNuL291dGVyL29zcy9jaGVja3BsYXkiLCJjYWxsYmFja0JvZHkiOiJ7XCJob3N0XCI6JHtodHRwSGVhZGVyLmhvc3R9LFwic2l6ZVwiOiR7c2l6ZX0sXCJyYW5nZVwiOiR7aHR0cEhlYWRlci5yYW5nZX0sXCJyZWZlcmVyXCI6JHtodHRwSGVhZGVyLnJlZmVyZXJ9LFwiY29va2llXCI6JHtodHRwSGVhZGVyLmNvb2tpZX0sXCJtZXRob2RcIjoke2h0dHBIZWFkZXIubWV0aG9kfSxcInVscnBcIjoke2h0dHBIZWFkZXIueC11bHJwfSxcImlwXCI6JHtjbGllbnRJcH0sXCJwb3J0XCI6JHtjbGllbnRQb3J0fSxcIm9ya1wiOiR7eDpvcmt9LFwib2JqZWN0XCI6JHtvYmplY3R9LFwic3BcIjoke3g6c3B9LFwidWRcIjoke3g6dWR9LFwidG9rZW5cIjoke3g6dG9rZW59LFwiYXVcIjoke3g6YXV9LFwidHRsXCI6JHt4OnR0bH0sXCJkdF9zcFwiOiR7eDpkdF9zcH0sXCJoc3BcIjoke3g6aHNwfSxcImNsaWVudF90b2tlblwiOiR7cXVlcnlTdHJpbmcuY2xpZW50X3Rva2VufX0ifQ%3D%3D&ud=12-4-6-0-6-N-4-N-1-24-2-N-N-N-N&filename=%E8%BD%BB%E6%9D%BE202509_5.0.2.ipa"
+        bundleId: "X",
+        ipaDownloadUrl: "https://github.com/CoderTonyChan/ipa.store/releases/download/ipa.store/2609_5.0.2_xyz.yyyue.esign.net_signed.ipa"
     }
 ];
 
