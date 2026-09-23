@@ -3,8 +3,27 @@ const fs = require('fs');
 const path = require('path');
 const { appList, nodeList } = require('./app.config');
 
+/**
+ * XML转义，plist专用，处理 & < > " 四个特殊字符
+ * @param {string} str
+ * @returns {string}
+ */
+function escapeXml(str) {
+    if (!str) return '';
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+}
+
 // plist xml模板
 function buildPlistContent(ipaFullUrl, bundleId, title, version) {
+    const urlEsc = escapeXml(ipaFullUrl);
+    const bidEsc = escapeXml(bundleId);
+    const titleEsc = escapeXml(title);
+    const verEsc = escapeXml(version);
+
     return `<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
@@ -18,19 +37,19 @@ function buildPlistContent(ipaFullUrl, bundleId, title, version) {
                     <key>kind</key>
                     <string>software-package</string>
                     <key>url</key>
-                    <string>${ipaFullUrl}</string>
+                    <string>${urlEsc}</string>
                 </dict>
             </array>
             <key>metadata</key>
             <dict>
                 <key>bundle-identifier</key>
-                <string>${bundleId}</string>
+                <string>${bidEsc}</string>
                 <key>bundle-version</key>
-                <string>${version}</string>
+                <string>${verEsc}</string>
                 <key>kind</key>
                 <string>software</string>
                 <key>title</key>
-                <string>${title}</string>
+                <string>${titleEsc}</string>
             </dict>
         </dict>
     </array>
@@ -38,7 +57,7 @@ function buildPlistContent(ipaFullUrl, bundleId, title, version) {
 </plist>`;
 }
 
-// 直接输出到项目根目录
+// 输出目录
 const outDir = __dirname;
 
 // 批量生成plist
