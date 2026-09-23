@@ -5,6 +5,7 @@ const { appList, nodeList } = require('./app.config');
 
 /**
  * XML转义，用于标题、bundleId、版本号（这些字段不使用CDATA）
+ * CDATA可用 转义后也可用
  * @param {string} str
  * @returns {string}
  */
